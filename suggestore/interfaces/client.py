@@ -29,6 +29,7 @@ class Client:
             json['keywords'] = {}
 
         json['poster_path'] = "https://image.tmdb.org/t/p/original/" + json.get('poster_path')
+        json['vote_average'] *= 10
 
         attr = {}
         for name in SELECTED_DATA:
@@ -62,7 +63,7 @@ class Client:
         return Matrix(req.get(URL + path).json()["genres"])
 
     def top_movies(self, limit_page=1):
-        full_url = f"{self.url}/trending/all/day?api_key={self.key}&language={self.language}&page={limit_page}"
+        full_url = f"{self.url}/movie/top_rated?api_key={self.key}&language={self.language}&page={limit_page}"
         list_movies = req.get(full_url).json()['results']
 
         for movie in list_movies:
