@@ -6,24 +6,30 @@ client = Client(delay=0, language="fr-FR")
 df_movies = pd.read_csv('~/Workspace/onregardequoi/suggestore/suggestore/clustering/data/movie_clustered.csv')
 
 
-def suggest_movies(selected_movies: list, limit_head=10):
-    suggestions = {}
-    selected_movies = [int(_id) for _id in selected_movies]
+def suggest_movies(id_movie, page=0):
+    cluster_id = df_movies.loc[df_movies.id == id_movie, 'cluster'].values[0]
 
-    for id_movie in selected_movies:
-        cluster_id = int(df_movies.loc[df_movies.id == id_movie, 'cluster'])
-
-        suggestions[cluster_id] = list(get_detail(id_movie, cluster_id))
-
-    return suggestions
+    return cluster_detail(cluster_id, page)
 
 
-def get_detail(id_movie: int, cluster: int, limit_head=10):
+def cluster_detail(cluster, index):
+    try:
+        movie_id =  df_movies.loc[df_movies.cluster == int(cluster), 'id'].iloc[index]
+        movie_detail = client.get_movie(int(movie_id)).json
+    except IndexError:
+        movie_detail = {}
+
+    return movie_detail
+
+
+def cluster_details(cluster, limit_head):
     for movie in df_movies.loc[df_movies.cluster == int(cluster), 'id'].head(limit_head):
         yield client.get_movie(int(movie)).json
 
+def search_movie(query):
+    return [movie.json for movie in client.search(query)]
 
-def info_movie(id_movie: int):
+def info_movie(id_movie):
     return client.get_movie(id_movie).json
 
 

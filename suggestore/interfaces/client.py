@@ -28,7 +28,10 @@ class Client:
         except KeyError:
             json['keywords'] = {}
 
-        json['poster_path'] = "https://image.tmdb.org/t/p/original/" + json.get('poster_path')
+        if not json.get('poster_path'):
+            json['poster_path'] = ""
+
+        json['poster_path'] = "https://image.tmdb.org/t/p/original/" + json['poster_path']
         json['vote_average'] *= 10
 
         attr = {}
