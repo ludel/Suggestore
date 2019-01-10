@@ -6,7 +6,7 @@ from .interfaces.client import Client
 
 client = Client(delay=0, language="fr-FR")
 
-csv_path = '/home/travis/virtualenv/python3.7.1/src/suggestore/suggestore/clustering/data/movie_clustered.csv'
+csv_path = pkg_resources.resource_filename(__name__, 'clustering/data/movie_clustered.csv')
 df_movies = pd.read_csv(csv_path)
 
 
