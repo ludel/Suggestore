@@ -36,3 +36,8 @@ def search_movie(query):
 
 def info_movie(id_movie):
     return client.get_movie(id_movie).json
+
+
+def get_movie_full_data():
+    csv_movie = pkg_resources.resource_filename(__name__, 'clustering/data/movie.csv')
+    return pd.read_csv(csv_movie)
