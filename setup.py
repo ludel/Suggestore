@@ -2,7 +2,7 @@ import setuptools
 
 setuptools.setup(
     name='suggestore',
-    version='0.0.2',
+    version='0.1.0',
     author='Ludovic Delsol',
     install_requires=['pandas', 'sklearn', 'requests'],
     python_requires='>=3.6',

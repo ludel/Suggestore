@@ -9,25 +9,10 @@ csv_path = pkg_resources.resource_filename(__name__, 'clustering/data/movie_clus
 df_movies = pd.read_csv(csv_path)
 
 
-def suggest_movies(id_movie, page=0):
+def suggest_movies(id_movie):
     cluster_id = df_movies.loc[df_movies.id == id_movie, 'cluster'].values[0]
 
-    return cluster_detail(cluster_id, page)
-
-
-def cluster_detail(cluster, index):
-    try:
-        movie_id = df_movies.loc[df_movies.cluster == int(cluster), 'id'].iloc[index]
-        movie_detail = client.get_movie(int(movie_id)).json
-    except IndexError:
-        movie_detail = {}
-
-    return movie_detail
-
-
-def cluster_details(cluster, limit_head):
-    for movie in df_movies.loc[df_movies.cluster == int(cluster), 'id'].head(limit_head):
-        yield client.get_movie(int(movie)).json
+    return df_movies.loc[df_movies.cluster == int(cluster_id), 'id'].tolist()
 
 
 def search_movie(query):

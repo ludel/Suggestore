@@ -1,10 +1,10 @@
 from time import sleep
-
+import os
 import requests as req
 
 from .movie import Movie
 
-KEY = "93a2951771280d67e877c4f9c336fb5c"
+KEY = os.environ['TOKEN_KEY']
 URL = "https://api.themoviedb.org/3"
 SELECTED_DATA = ['id', 'title', 'genres', 'keywords', 'budget', 'release_date', 'original_language', 'credits',
                  'overview', 'vote_average', 'vote_count', 'poster_path', 'budget']
