@@ -55,3 +55,8 @@ class Client:
 
         for movie in list_movies:
             yield self.get_movie(movie["id"])
+
+    def top_movies_min(self, limit_page=1):
+        full_url = f"{self.url}/movie/top_rated?api_key={self.key}&language={self.language}&page={limit_page}"
+        for results in req.get(full_url).json()['results']:
+            yield Movie(**results)
