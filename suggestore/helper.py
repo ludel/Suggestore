@@ -1,8 +1,7 @@
+import pandas as pd
 import pkg_resources
 
-import pandas as pd
-
-from .interfaces.client import Client
+from suggestore.interfaces.client import Client
 
 client = Client(delay=0, language="fr-FR")
 
@@ -37,8 +36,3 @@ def search_movie(query):
 
 def info_movie(id_movie):
     return client.get_movie(id_movie).json
-
-
-def top_movies(page):
-    for movie in client.top_movies(page):
-        yield movie.json

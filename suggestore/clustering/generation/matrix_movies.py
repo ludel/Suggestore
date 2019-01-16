@@ -1,6 +1,6 @@
 import pandas as pd
 
-from .client import Client
+from suggestore.interfaces.client import Client
 
 path_matrix = "../data/movie.csv"
 
@@ -24,7 +24,7 @@ def append_file(list_movies):
 
 
 # todo : TV MOVIE => TV_Movie
-
+# todo : add poster path to matrix
 if __name__ == '__main__':
     for i in range(100, 300):
         movies = Client(delay=0.5).top_movies(i)
