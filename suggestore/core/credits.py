@@ -6,7 +6,7 @@ class Credit:
     def crew_search(self, query):
         for crew in self.crew:
             if crew.get("department") == query:
-                return crew['name'].replace(' ', "_").replace(',', '')
+                return crew['name'].replace(',', '')
 
         return ''
 
@@ -22,10 +22,10 @@ class Credit:
     def writer(self):
         return self.crew_search('Writing')
 
-    def main_actor(self, limit=3):
+    def main_actors(self, limit=3):
         for cast in self.cast:
             order = cast['order']
 
             if order < limit:
-                yield cast['name'].replace(' ', "_").replace(',', '')
+                yield cast['name'].replace(',', '')
 

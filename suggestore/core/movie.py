@@ -7,14 +7,18 @@ class Movie:
         self.json = kwargs
 
         for key, value in kwargs.items():
-            data = value
 
-            if type(value) is list:
-                data = GenericList(*value)
+            if key == 'genres' or key == 'keywords':
+                value = GenericList(*value)
             if key == 'credits':
-                data = Credit(**value)
+                value = Credit(**value)
+            if key == 'poster_path':
+                value = "https://image.tmdb.org/t/p/original" + str(value)
+            setattr(self, key, value)
 
-            setattr(self, key, data)
+    @property
+    def to_dict(self):
+        return self.__dict__
 
     def __repr__(self):
         return f"<MovieObject {getattr(self, 'id')} : {getattr(self, 'title')}>"

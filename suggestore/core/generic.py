@@ -13,4 +13,4 @@ class GenericList:
         return " ".join(word.replace(' ', '_') for word in firsts)
 
     def __str__(self):
-        return " ".join(word for word in self.name)
+        return ", ".join(word for word in self.name)

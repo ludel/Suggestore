@@ -1,5 +1,6 @@
-from time import sleep
 import os
+from time import sleep
+
 import requests as req
 
 from .movie import Movie
@@ -31,7 +32,6 @@ class Client:
         if not json.get('poster_path'):
             json['poster_path'] = ""
 
-        json['poster_path'] = "https://image.tmdb.org/t/p/original" + json['poster_path']
         json['vote_average'] *= 10
 
         attr = {}
@@ -42,18 +42,25 @@ class Client:
 
         return Movie(**attr)
 
-    def search(self, query):
-        full_url = f"{self.url}/search/movie?api_key={self.key}&language={self.language}&query={query}&page=1"
-        list_movies = req.get(full_url).json()['results']
+    def search(self, query, page=1):
+        full_url = f"{self.url}/search/movie?api_key={self.key}&language={self.language}&query={query}&page={page}"
+        movies = self.request(full_url)
 
-        for movie in list_movies:
-            yield self.get_movie(movie["id"])
+        for data in movies['results']:
+            yield Movie(**data)
 
-    def top_movies(self, page=1):
-        full_url = f"{self.url}/movie/top_rated?api_key={self.key}&language={self.language}&page={page}"
-        list_movies = req.get(full_url).json()['results']
+    def top_movies(self, order_by, page=1):
+        full_url = f"{self.url}/movie/{order_by}?api_key={self.key}&language={self.language}&page={page}"
+        movies = self.request(full_url)
 
-        for movie in list_movies:
-            yield self.get_movie(movie["id"])
+        for data in movies['results']:
+            yield Movie(**data)
 
+    @staticmethod
+    def request(url):
+        result = req.get(url)
 
+        if not result.ok:
+            raise req.ConnectionError(f'for {url}')
+        else:
+            return result.json()

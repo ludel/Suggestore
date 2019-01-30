@@ -1,6 +1,6 @@
 import pandas as pd
 
-from suggestore.interfaces.client import Client
+from suggestore.core.client import Client
 
 path_matrix = "../data/movie.csv"
 
@@ -15,9 +15,14 @@ def append_file(list_movies):
 
         keywords = movie.keywords.firsts(10)
 
+        main_actors = [actor.remplace(' ', '_') for actor in movie.credits.main_actor(3)]
+
+        compositor = movie.credits.compositor.remplace(' ', '_')
+        writer = movie.credits.writer.remplace(' ', '_')
+        director = movie.credits.director.remplace(' ', '_')
+
         matrix = [movie.id, title, movie.budget, keywords, movie.genres, movie.release_date, movie.original_language,
-                  movie.credits.director, movie.credits.writer, movie.credits.compositor] + list(
-            movie.credits.main_actor(3))
+                  director, writer, compositor, main_actors]
 
         file_movie.write(",".join(str(key) for key in matrix))
     file_movie.close()
@@ -30,7 +35,6 @@ if __name__ == '__main__':
         movies = Client(delay=0.5).top_movies(i)
         append_file(movies)
         print(f':: Page {i}')
-    # ,id,title,budget,keywords,genres,release_date,original_language,director,writer,compositor,actor_1,actor_2,actor_3
 
     df = pd.read_csv(path_matrix, error_bad_lines=False)
     df.drop_duplicates(subset='id', inplace=True)

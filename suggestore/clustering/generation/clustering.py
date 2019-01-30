@@ -4,9 +4,8 @@ from sklearn.decomposition import PCA
 
 df = pd.read_csv('../data/movie.csv', error_bad_lines=False)
 df.dropna(inplace=True)
-df.drop_duplicates(subset='title', inplace=True)
 
-df_feature = pd.read_csv('../data/feature.csv', index_col=0)
+df_feature = pd.read_csv('../data/movie_binary.csv', index_col=0)
 df_feature.dropna(inplace=True)
 
 

@@ -1,11 +1,11 @@
 import pandas as pd
 from sklearn.feature_extraction.text import CountVectorizer
 
-df = pd.read_csv("../data/movie.csv", error_bad_lines=False)
+df = pd.read_csv("../data/movie.csv")
 df_clean = pd.DataFrame()
 df.dropna(inplace=True)
 df.reset_index(drop=True, inplace=True)
-df.drop_duplicates(subset='title', inplace=True)
+df.drop_duplicates(subset='id', inplace=True)
 
 # Genres
 cv_genres = CountVectorizer()
@@ -46,4 +46,4 @@ vector_keywords = cv_keyword.fit_transform(df['keywords']).toarray()
 for counter, name in enumerate(cv_keyword.get_feature_names()):
     df_clean[f"keywords_{name}"] = vector_keywords[:, counter]
 
-df_clean.to_csv('../data/feature.csv')
+df_clean.to_csv('../data/movie_binary.csv')
