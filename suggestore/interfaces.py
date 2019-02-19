@@ -19,17 +19,17 @@ def suggest_movies(id_movie):
 
 
 def search_movie(query):
-    return [movie.to_dict for movie in client.search(query)]
+    return [movie.to_dict() for movie in client.search(query)]
 
 
 def info_movie(id_movie):
-    return client.get_movie(id_movie).to_dict
+    return client.get_movie(id_movie).to_dict()
 
 
 def get_movies(page, order_by, search=None):
     movies = client.search(search, page) if search else client.top_movies(order_by, page)
 
-    return [movie.to_dict for movie in movies]
+    return [movie.to_dict() for movie in movies]
 
 
 def get_movie_full_data():

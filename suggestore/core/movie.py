@@ -16,7 +16,6 @@ class Movie:
                 value = "https://image.tmdb.org/t/p/original" + str(value)
             setattr(self, key, value)
 
-    @property
     def to_dict(self):
         return self.__dict__
 
