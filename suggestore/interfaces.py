@@ -18,7 +18,7 @@ def suggest_movies(id_movie):
 
     cluster_movies = df_movies.loc[df_movies.cluster == int(cluster_id), 'id'].tolist()
 
-    return filter_results(id_movie, cluster_movies)
+    return cluster_movies
 
 
 def filter_results(movie_id, same_cluster_movie):
