@@ -1,5 +1,6 @@
 import pandas as pd
 import pkg_resources
+from sklearn.metrics.pairwise import linear_kernel
 
 from suggestore.core.client import Client
 
@@ -15,7 +16,30 @@ def suggest_movies(id_movie):
     except IndexError:
         return []
 
-    return df_movies.loc[df_movies.cluster == int(cluster_id), 'id'].tolist()
+    cluster_movies = df_movies.loc[df_movies.cluster == int(cluster_id), 'id'].tolist()
+
+    return filter_results(id_movie, cluster_movies)
+
+
+def filter_results(movie_id, same_cluster_movie):
+    df_feature = pd.read_csv(
+        pkg_resources.resource_filename(__name__, 'similarity/data/feature_binary.csv')
+    )
+
+    context_data = df_feature.loc[df_feature['id'].isin(same_cluster_movie)]
+    context_data.reset_index(drop=True, inplace=True)
+
+    idx = context_data.loc[context_data['id'] == movie_id].index.values.astype(int)[0]
+
+    series_id = context_data['id']
+    del context_data['id']
+
+    cosine_sim = linear_kernel(context_data, context_data)
+    sim_scores = list(enumerate(cosine_sim[idx]))
+    sim_scores = sorted(sim_scores, key=lambda x: x[1], reverse=True)
+    movie_indices = [i[0] for i in sim_scores]
+
+    return series_id.iloc[movie_indices].tolist()
 
 
 def search_movie(query):
@@ -35,3 +59,7 @@ def get_movies(page, order_by, search=None):
 def get_movie_full_data():
     csv_movie = pkg_resources.resource_filename(__name__, 'clustering/data/movie.csv')
     return pd.read_csv(csv_movie)
+
+
+if __name__ == '__main__':
+    suggest_movies(55301)

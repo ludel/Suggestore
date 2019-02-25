@@ -22,7 +22,7 @@ for index, name in enumerate(cv_language.get_feature_names()):
 # actor
 df['actor'] = df['actor_1'] + ' ' + df['actor_2'] + ' ' + df['actor_3']
 
-cast = {'director': 50, 'writer': 25, 'compositor': 25, 'actor': 50}
+cast = {'director': 200, 'writer': 100, 'compositor': 100, 'actor': 100}
 
 for job, max_features in cast.items():
     cv = CountVectorizer(max_features=max_features)
@@ -30,4 +30,6 @@ for job, max_features in cast.items():
     for index, name in enumerate(cv.get_feature_names()):
         df_clean[f"{job}_{name}"] = vector[:, index]
 
-df_clean.to_csv('data/movie_binary.csv')
+df_clean['id'] = df['id']
+df_clean.to_csv('data/feature_binary.csv')
+print(df_clean)

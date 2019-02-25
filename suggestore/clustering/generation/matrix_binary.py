@@ -13,7 +13,6 @@ vector_genres = cv_genres.fit_transform(df['genres']).toarray()
 for counter, name in enumerate(cv_genres.get_feature_names()):
     df_clean[f"genre_{name}"] = vector_genres[:, counter]
 
-
 # Keywords
 voc = ['adultery', 'aftercreditsstinger', 'airplane', 'alien', 'assassin', 'biography', 'horror', 'mafia', 'california',
        'christmas', 'cia', 'corruption', 'dc_comics', 'death', 'detective', 'space_travel', 'dream', 'drugs',
