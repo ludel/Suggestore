@@ -1,6 +1,5 @@
 import pandas as pd
 import pkg_resources
-from sklearn.metrics.pairwise import linear_kernel
 
 from suggestore.core.client import Client
 
