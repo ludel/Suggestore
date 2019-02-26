@@ -21,27 +21,6 @@ def suggest_movies(id_movie):
     return cluster_movies
 
 
-def filter_results(movie_id, same_cluster_movie):
-    df_feature = pd.read_csv(
-        pkg_resources.resource_filename(__name__, 'similarity/data/feature_binary.csv')
-    )
-
-    context_data = df_feature.loc[df_feature['id'].isin(same_cluster_movie)]
-    context_data.reset_index(drop=True, inplace=True)
-
-    idx = context_data.loc[context_data['id'] == movie_id].index.values.astype(int)[0]
-
-    series_id = context_data['id']
-    del context_data['id']
-
-    cosine_sim = linear_kernel(context_data, context_data)
-    sim_scores = list(enumerate(cosine_sim[idx]))
-    sim_scores = sorted(sim_scores, key=lambda x: x[1], reverse=True)
-    movie_indices = [i[0] for i in sim_scores]
-
-    return series_id.iloc[movie_indices].tolist()
-
-
 def search_movie(query):
     return [movie.to_dict() for movie in client.search(query)]
 
