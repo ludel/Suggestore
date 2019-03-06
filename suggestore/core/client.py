@@ -21,7 +21,7 @@ class Client:
     def get_movie(self, movie_id):
         sleep(self.delay)
 
-        full_url = f"{self.url}/movie/{movie_id}?api_key={self.key}&language={self.language}&append_to_response=credits,keywords"
+        full_url = f"{self.url}/movie/{movie_id}?api_key={self.key}&language={self.language}&append_to_response=credits,keywords,videos,reviews"
 
         json = req.get(full_url).json()
         try:
