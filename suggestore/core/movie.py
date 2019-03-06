@@ -4,10 +4,7 @@ from .generic import GenericList
 
 class Movie:
     def __init__(self, **kwargs):
-        self.json = kwargs
-
         for key, value in kwargs.items():
-
             if key == 'genres' or key == 'keywords':
                 value = GenericList(*value)
             if key == 'credits':
