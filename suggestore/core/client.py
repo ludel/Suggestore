@@ -8,7 +8,7 @@ from .movie import Movie
 KEY = os.environ['TOKEN_KEY']
 URL = "https://api.themoviedb.org/3"
 SELECTED_DATA = ['id', 'title', 'genres', 'keywords', 'budget', 'release_date', 'original_language', 'credits',
-                 'overview', 'vote_average', 'vote_count', 'poster_path', 'budget', 'videos', 'reviews']
+                 'overview', 'vote_average', 'vote_count', 'poster_path', 'budget', 'videos', 'reviews', 'runtime']
 
 
 class Client:
