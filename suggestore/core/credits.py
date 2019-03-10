@@ -22,7 +22,7 @@ class Credit:
     def writer(self):
         return self.crew_search('Writing')
 
-    def main_actors(self, limit=3):
+    def main_actors(self, limit=5):
         for cast in self.cast:
             order = cast['order']
 
