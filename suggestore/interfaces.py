@@ -29,7 +29,7 @@ def info_movie(id_movie):
 
 
 def get_movies(page, order_by, search=None):
-    movies = client.search(search, page) if search else client.top_movies(order_by, page)
+    movies = client.search(search, page, True) if search else client.top_movies(order_by, page, True)
 
     return [movie.to_dict() for movie in movies]
 
