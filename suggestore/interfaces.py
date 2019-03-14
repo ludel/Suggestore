@@ -36,8 +36,8 @@ def get_movies(page, order_by, search=None):
 
 def get_movie_full_data():
     csv_movie = pkg_resources.resource_filename(__name__, 'clustering/data/movie.csv')
-    return pd.read_csv(csv_movie)
+    return pd.read_csv(csv_movie, error_bad_lines=True).dropna(inplace=True)
 
 
 if __name__ == '__main__':
-    suggest_movies(55301)
+    get_movie_full_data()
