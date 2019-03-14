@@ -22,8 +22,8 @@ class Client:
         sleep(self.delay)
 
         full_url = f"{self.url}/movie/{movie_id}?api_key={self.key}&language={self.language}&append_to_response=credits,keywords,videos,reviews"
-
         json = req.get(full_url).json()
+
         try:
             json['keywords'] = json['keywords']['keywords']
         except KeyError:
@@ -54,12 +54,11 @@ class Client:
         movies = self.request(full_url)
 
         for data in movies['results']:
-            yield Movie(**data)
+            yield self.get_movie(data['id'])
 
     @staticmethod
     def request(url):
         result = req.get(url)
-
         if not result.ok:
             raise req.ConnectionError(f'for {url}')
         else:

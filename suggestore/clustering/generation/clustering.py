@@ -2,7 +2,7 @@ import pandas as pd
 from sklearn.cluster import KMeans
 from sklearn.decomposition import PCA
 
-df = pd.read_csv('../data/movie.csv', error_bad_lines=False)
+df = pd.read_csv('../data/movie.csv', error_bad_lines=True)
 df.dropna(inplace=True)
 
 df_feature = pd.read_csv('../data/movie_binary.csv', index_col=0)

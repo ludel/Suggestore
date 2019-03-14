@@ -12,15 +12,15 @@ class Credit:
 
     @property
     def director(self):
-        return self.crew_search('Directing')
+        return self.crew_search('Directing').replace(' ', '_')
 
     @property
     def compositor(self):
-        return self.crew_search('Sound')
+        return self.crew_search('Sound').replace(' ', '_')
 
     @property
     def writer(self):
-        return self.crew_search('Writing')
+        return self.crew_search('Writing').replace(' ', '_')
 
     def main_actors(self, limit=5):
         for cast in self.cast:
