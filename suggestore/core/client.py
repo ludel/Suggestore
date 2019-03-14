@@ -49,12 +49,15 @@ class Client:
         for data in movies['results']:
             yield Movie(**data)
 
-    def top_movies(self, order_by, page=1):
+    def top_movies(self, order_by, page=1, fast=False):
         full_url = f"{self.url}/movie/{order_by}?api_key={self.key}&language={self.language}&page={page}"
         movies = self.request(full_url)
 
         for data in movies['results']:
-            yield self.get_movie(data['id'])
+            if fast:
+                yield Movie(**data)
+            else:
+                yield self.get_movie(data['id'])
 
     @staticmethod
     def request(url):
