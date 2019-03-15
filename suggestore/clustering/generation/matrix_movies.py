@@ -24,21 +24,21 @@ def append_file(list_movies):
                 'vote_average': movie.vote_average,
                 'vote_count': movie.vote_count,
                 'poster_path': movie.poster_path,
-                'overview': movie.overview.replace(';', ','),
+                'overview': movie.overview.replace(';', ',').replace('"', "'"),
             }
 
             if page == 1 and index == 0:  # wtf c'est ouf
-                file_movie.write(";".join(payload.keys()))
+                file_movie.write(";".join(f'"{key}"' for key in payload.keys()))
 
             file_movie.write("\n")
             file_movie.write(";".join(f'"{value}"' for value in payload.values()))
 
 
 # todo : TV MOVIE => TV_Movie
-# todo : add poster path to matrix
+
 if __name__ == '__main__':
     for page in range(1, 300):
-        movies = Client(delay=0).top_movies('top_rated', page)
+        movies = Client(delay=0, language='fr-FR').top_movies('top_rated', page)
         append_file(movies)
         print(f':: Page {page}')
 

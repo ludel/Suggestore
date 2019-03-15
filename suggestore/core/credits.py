@@ -27,5 +27,5 @@ class Credit:
             order = cast['order']
 
             if order < limit:
-                yield cast['name'].replace(',', '')
+                yield cast['name'].replace(' ', '_')
 
