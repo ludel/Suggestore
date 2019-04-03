@@ -1,19 +1,68 @@
 import pandas as pd
 from sklearn.cluster import AffinityPropagation
 from sklearn.decomposition import PCA
+from sklearn.feature_extraction.text import CountVectorizer
 
-df = pd.read_csv('../data/movie.csv', error_bad_lines=True)
-df.dropna(inplace=True)
+from suggestore.clustering.generation.config import VOCABULARY, REPLACE
 
-df_feature = pd.read_csv('../data/movie_binary.csv', index_col=0)
-df_feature.dropna(inplace=True)
 
-pca = PCA()
-pca.fit(df_feature)
-for index, score in zip(df_feature.columns.values, pca.components_[0]):
-    print(index, score)
+class Clustering:
 
-pca = pca.transform(df_feature)
-predict = AffinityPropagation().fit_predict(pca)
+    def __init__(self, export_dir='../data'):
+        self.export_dir = export_dir
 
-pd.DataFrame(data={'id': df['id'], 'cluster': predict, 'title': df['title']}).to_csv("../data/movie_clustered.csv")
+    @property
+    def clean_data(self):
+        df = pd.read_csv(f'{self.export_dir}/movie.csv')
+        df.dropna(inplace=True)
+        df.drop_duplicates(subset='id', inplace=True)
+
+        return df
+
+    def binary_data(self, export=False):
+        df = self.clean_data
+        df_binary = pd.DataFrame()
+        df_binary['id'] = df['id']
+
+        # Genres
+        cv_genres = CountVectorizer()
+        vector_genres = cv_genres.fit_transform(df['genres']).toarray()
+        for counter, name in enumerate(cv_genres.get_feature_names()):
+            df_binary[f"genre_{name}"] = vector_genres[:, counter]
+
+        # Keywords
+        for key, value in REPLACE.items():
+            df['keywords'] = df.keywords.str.replace(key, value)
+
+        cv_keyword = CountVectorizer(vocabulary=VOCABULARY)
+        vector_keywords = cv_keyword.fit_transform(df['keywords']).toarray()
+        for counter, name in enumerate(cv_keyword.get_feature_names()):
+            df_binary[f"keywords_{name}"] = vector_keywords[:, counter]
+
+        if export:
+            df_binary.to_csv(f'{self.export_dir}/movie_binary.csv')
+
+        return df_binary
+
+    def process(self):
+        df_binary = self.binary_data(False)
+        uid = df_binary['id']
+        df_binary.drop('id', axis=1, inplace=True)
+
+        pca = PCA()
+        pca.fit(df_binary)
+        for index, score in zip(df_binary.columns.values, pca.components_[0]):
+            print(f'{index} ==> {score}')
+
+        pca = pca.transform(df_binary)
+        predict = AffinityPropagation().fit_predict(pca)
+
+        df_clustered = pd.DataFrame(data={'id': uid, 'cluster': predict})
+        df_clustered.set_index('id', inplace=True)
+
+        df_clustered.to_csv(f'{self.export_dir}/movie_clustered.csv')
+
+
+if __name__ == '__main__':
+    clustering = Clustering()
+    clustering.process()

@@ -36,7 +36,7 @@ def get_movies(page, order_by, search=None):
 
 def get_movie_full_data():
     csv_movie = pkg_resources.resource_filename(__name__, 'clustering/data/movie.csv')
-    return pd.read_csv(csv_movie, error_bad_lines=True).dropna()
+    return pd.read_csv(csv_movie, error_bad_lines=True).dropna().drop_duplicates(subset='id')
 
 
 if __name__ == '__main__':

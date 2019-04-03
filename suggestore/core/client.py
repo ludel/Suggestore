@@ -5,16 +5,16 @@ import requests as req
 
 from .movie import Movie
 
-KEY = os.environ['TOKEN_KEY']
-URL = "https://api.themoviedb.org/3"
-SELECTED_DATA = ['id', 'title', 'genres', 'keywords', 'budget', 'release_date', 'original_language', 'credits',
-                 'overview', 'vote_average', 'vote_count', 'poster_path', 'budget', 'videos', 'reviews', 'runtime']
+SELECTED_DATA = [
+    'id', 'title', 'genres', 'keywords', 'budget', 'release_date', 'original_language', 'credits', 'overview',
+    'vote_average', 'vote_count', 'poster_path', 'budget', 'videos', 'reviews', 'runtime'
+]
 
 
 class Client:
     def __init__(self, delay=1, language="en-US"):
-        self.url = URL
-        self.key = KEY
+        self.url = "https://api.themoviedb.org/3"
+        self.key = os.environ['TOKEN_KEY']
         self.delay = delay
         self.language = language
 
@@ -62,10 +62,19 @@ class Client:
             else:
                 yield self.get_movie(data['id'])
 
+    def now_playing(self, limit_popularity):
+        full_url = f"{self.url}/movie/now_playing?api_key={self.key}&language={self.language}"
+        movies = self.request(full_url)
+
+        for data in movies['results']:
+            if data['popularity'] < limit_popularity:
+                break
+
+            yield self.get_movie(data['id'])
+
     @staticmethod
     def request(url):
-        result = req.get(url)
-        if not result.ok:
-            raise req.ConnectionError(f'for {url}')
-        else:
-            return result.json()
+        r = req.get(url)
+        r.raise_for_status()
+
+        return r.json()
