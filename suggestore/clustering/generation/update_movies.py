@@ -18,7 +18,10 @@ def append_main_data():
     old_data = pd.read_csv('../data/movie.csv')
     extra_data = pd.read_csv('../data/movie-tmp.csv')
 
-    new_data = old_data.append(extra_data).reset_index(drop=True)
+    new_data = old_data.append(extra_data, sort=False)
+    new_data.drop_duplicates(subset='id', inplace=True)
+    new_data.set_index('id', inplace=True)
+
     new_data.to_csv('../data/movie.csv')
 
 
