@@ -7,7 +7,7 @@ from .movie import Movie
 
 SELECTED_DATA = [
     'id', 'title', 'genres', 'keywords', 'budget', 'release_date', 'original_language', 'credits', 'overview',
-    'vote_average', 'vote_count', 'poster_path', 'budget', 'videos', 'reviews', 'runtime'
+    'vote_average', 'vote_count', 'poster_path', 'videos', 'reviews', 'runtime'
 ]
 
 
@@ -22,23 +22,16 @@ class Client:
         sleep(self.delay)
 
         full_url = f"{self.url}/movie/{movie_id}?api_key={self.key}&language={self.language}&append_to_response=credits,keywords,videos,reviews"
-        json = req.get(full_url).json()
+        json = self.request(full_url)
 
         try:
             json['keywords'] = json['keywords']['keywords']
         except KeyError:
             json['keywords'] = {}
 
-        if not json.get('poster_path'):
-            json['poster_path'] = ""
+        attr = {name: json.get(name) for name in SELECTED_DATA}
 
-        json['vote_average'] *= 10
-
-        attr = {}
-        for name in SELECTED_DATA:
-            attr[name] = json.get(name, "Unknown")
-
-        print("=> " + attr["title"])
+        print("=> " + attr.get('title', 'Not found'))
 
         return Movie(**attr)
 
