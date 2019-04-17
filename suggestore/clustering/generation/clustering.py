@@ -28,7 +28,7 @@ class Clustering:
         cv_genres = CountVectorizer()
         vector_genres = cv_genres.fit_transform(df['genres']).toarray()
         for counter, name in enumerate(cv_genres.get_feature_names()):
-            df_binary[f"genre_{name}"] = vector_genres[:, counter]
+            df_binary[f'genre_{name}'] = vector_genres[:, counter]
 
         # Keywords
         for key, value in REPLACE.items():
@@ -37,7 +37,7 @@ class Clustering:
         cv_keyword = CountVectorizer(vocabulary=VOCABULARY)
         vector_keywords = cv_keyword.fit_transform(df['keywords']).toarray()
         for counter, name in enumerate(cv_keyword.get_feature_names()):
-            df_binary[f"keywords_{name}"] = vector_keywords[:, counter]
+            df_binary[f'keywords_{name}'] = vector_keywords[:, counter]
 
         if export:
             df_binary.to_csv(f'{self.export_dir}/movie_binary.csv')
@@ -65,4 +65,5 @@ class Clustering:
 
 if __name__ == '__main__':
     clustering = Clustering()
-    clustering.process()
+    clustering.binary_data(True)
+    # clustering.process()
