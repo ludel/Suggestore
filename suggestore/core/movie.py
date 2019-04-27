@@ -5,7 +5,7 @@ from .generic import GenericList
 class Movie:
     def __init__(self, id, title, genres=None, keywords=None, budget=0, release_date=None, original_language=None,
                  credits=None, overview='', vote_average=0, vote_count=0, poster_path='', videos=None, reviews=None,
-                 runtime=None):
+                 runtime=None, backdrop_path=None):
 
         if genres is None:
             genres = []
@@ -29,6 +29,7 @@ class Movie:
         self.reviews = reviews
         self.runtime = runtime
         self.poster_path = "https://image.tmdb.org/t/p/original" + str(poster_path)
+        self.backdrop_path = "https://image.tmdb.org/t/p/original" + str(backdrop_path)
 
     def to_dict(self):
         return self.__dict__

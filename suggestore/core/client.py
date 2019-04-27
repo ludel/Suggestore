@@ -7,7 +7,7 @@ from .movie import Movie
 
 SELECTED_DATA = [
     'id', 'title', 'genres', 'keywords', 'budget', 'release_date', 'original_language', 'credits', 'overview',
-    'vote_average', 'vote_count', 'poster_path', 'videos', 'reviews', 'runtime'
+    'vote_average', 'vote_count', 'poster_path', 'videos', 'reviews', 'runtime', 'backdrop_path'
 ]
 
 
