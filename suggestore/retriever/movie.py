@@ -11,9 +11,11 @@ class Movie(dict):
 
         crews = collections.defaultdict(list)
         for crew in kwargs['credits']['crew']:
-            department = crew['department']
+            department = crew['job']
             crews[department].append(crew)
         self['crew'] = crews
+
+        self['actors'] = kwargs['credits']['crew']
 
     def __repr__(self):
         return f"<Movie {self['id']} : {self['title']}>"

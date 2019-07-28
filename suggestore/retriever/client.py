@@ -48,5 +48,5 @@ if __name__ == '__main__':
     c = Client()
 
     for i in c.top():
-        print(i['crew']['Directing'])
-        print(i['crew']['Writing'])
+        print(i['crew']['Director'])
+
