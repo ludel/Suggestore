@@ -15,7 +15,22 @@ class Movie(dict):
             crews[department].append(crew)
         self['crew'] = crews
 
-        self['actors'] = kwargs['credits']['crew']
+        self['cast'] = kwargs['credits']['cast']
+        del kwargs['credits']['cast']
+
+    def get_crew(self, category, job):
+        try:
+            crew = self[category][job][0]['name']
+        except (IndexError, KeyError):
+            crew = ''
+        return crew
+
+    def get_cast(self, category, index):
+        try:
+            cast = self[category][index]['name']
+        except (IndexError, KeyError):
+            cast = ''
+        return cast
 
     def __repr__(self):
         return f"<Movie {self['id']} : {self['title']}>"

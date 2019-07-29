@@ -65,5 +65,4 @@ class Clustering:
 
 if __name__ == '__main__':
     clustering = Clustering()
-    clustering.binary_data(True)
-    # clustering.process()
+    clustering.process()

@@ -23,6 +23,8 @@ class Client:
         req = requests.get(full_url)
         req.raise_for_status()
 
+        print(f"=> {req.json()['title']}")
+
         return Movie(**req.json())
 
     def _list(self, url_args, endpoint, detail):
@@ -47,6 +49,5 @@ class Client:
 if __name__ == '__main__':
     c = Client()
 
-    for i in c.top():
-        print(i['crew']['Director'])
-
+    for movie in c.top(1):
+        print(movie['crew']['Producer'])

@@ -3,23 +3,21 @@ from pandas.errors import EmptyDataError
 
 from suggestore.retriever.client import Client
 
-header = ['id', 'title', 'budget', 'keywords', 'genres', 'release_date', 'original_language', 'crew',
-          'cast', 'runtime', 'vote_average', 'vote_count', 'poster_path']
+header = ['id', 'title', 'keywords', 'genres', 'director', 'producer', 'compositor', 'actor_1', 'actor_2', 'actor_3']
 
 
 def get_detail(movie):
     return {
         'id': movie['id'],
         'title': movie['title'].replace(',', ''),
-        'keywords': ' '.join(str(k['id']) for k in movie['keywords']['keywords']),
-        'genres': ' '.join(str(g['id']) for g in movie['genres']),
-        'release_date': movie['release_date'],
-        'original_language': movie['original_language'],
-        'directing': '',
-        'cast': ' '.join(c['id'] for c in movie['credits']['cast']),
-        'runtime': movie['runtime'],
-        'vote_average': movie['vote_average'],
-        'vote_count': movie['vote_count'],
+        'keywords': ' '.join(str(k['name']) for k in movie['keywords']['keywords']),
+        'genres': ' '.join(str(g['name']) for g in movie['genres']),
+        'director': movie.get_crew('crew', 'Director'),
+        'producer': movie.get_crew('crew', 'Producer'),
+        'compositor': movie.get_crew('crew', 'Original Music Composer'),
+        'actor_1': movie.get_cast('cast', 0),
+        'actor_2': movie.get_cast('cast', 1),
+        'actor_3': movie.get_cast('cast', 2),
     }
 
 
