@@ -13,7 +13,7 @@ class Clustering:
 
     @property
     def clean_data(self):
-        df = pd.read_csv(f'{self.export_dir}/movie.csv')
+        df = pd.read_csv(f'{self.export_dir}/movie.csv', index_col=0)
         df.dropna(inplace=True)
         df.drop_duplicates(subset='id', inplace=True)
 
