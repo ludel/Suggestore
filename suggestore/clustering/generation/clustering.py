@@ -45,8 +45,8 @@ class Clustering:
         return df_binary
 
     def process(self):
+        df = self.clean_data
         df_binary = self.binary_data(False)
-        uid = df_binary['id']
         df_binary.drop('id', axis=1, inplace=True)
 
         pca = PCA()
@@ -57,10 +57,9 @@ class Clustering:
         pca = pca.transform(df_binary)
         predict = AffinityPropagation().fit_predict(pca)
 
-        df_clustered = pd.DataFrame(data={'id': uid, 'cluster': predict})
-        df_clustered.set_index('id', inplace=True)
+        df['cluster'] = predict
 
-        df_clustered.to_csv(f'{self.export_dir}/movie_clustered.csv')
+        df.to_csv(f'{self.export_dir}/movie_clustered.csv', index=False)
 
 
 if __name__ == '__main__':
